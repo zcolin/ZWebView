@@ -7,7 +7,7 @@
  * ********************************************************
  */
 
-package com.zcolin.ui.demo;
+package com.zcolin.zwebview.demo;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;

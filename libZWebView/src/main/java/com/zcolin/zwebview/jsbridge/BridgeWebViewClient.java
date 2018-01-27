@@ -6,7 +6,7 @@
  *   date     18-1-9 上午8:51
  * ********************************************************
  */
-package zwebview.zcolin.com.zwebview.jsbridge;
+package com.zcolin.zwebview.jsbridge;
 
 import android.graphics.Bitmap;
 import android.os.Build;

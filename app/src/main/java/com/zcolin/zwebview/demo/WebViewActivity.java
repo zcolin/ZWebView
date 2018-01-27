@@ -6,7 +6,7 @@
  *   date     18-1-9 上午8:51
  * ********************************************************
  */
-package com.zcolin.ui.demo;
+package com.zcolin.zwebview.demo;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -19,9 +19,9 @@ import android.widget.Button;
 
 import com.fosung.ui.R;
 import com.zcolin.frame.util.GsonUtil;
+import com.zcolin.zwebview.ZWebView;
+import com.zcolin.zwebview.jsbridge.DefaultHandler;
 
-import zwebview.zcolin.com.zwebview.ZWebView;
-import zwebview.zcolin.com.zwebview.jsbridge.DefaultHandler;
 
 /**
  * 带JsBridge的webview的Demo

@@ -4,10 +4,10 @@
               android:layout_height="match_parent"
               android:orientation="vertical">
 
-    <zwebview.zcolin.com.zwebview.ZWebView
+    <com.zcolin.zwebview.ZWebView
         android:id="@+id/webView"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-    </zwebview.zcolin.com.zwebview.ZWebView>
+    </com.zcolin.zwebview.ZWebView>
 
 </LinearLayout>

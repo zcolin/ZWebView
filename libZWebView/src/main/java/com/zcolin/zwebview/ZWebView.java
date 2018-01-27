@@ -6,7 +6,7 @@
  *   date     18-1-9 上午8:51
  * ********************************************************
  */
-package zwebview.zcolin.com.zwebview;
+package com.zcolin.zwebview;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -30,7 +30,9 @@ import android.widget.AbsoluteLayout;
 import android.widget.FrameLayout;
 import android.widget.ProgressBar;
 
-import zwebview.zcolin.com.zwebview.jsbridge.BridgeWebView;
+import com.zcolin.zwebview.jsbridge.BridgeWebView;
+
+import zwebview.zcolin.com.zwebview.R;
 
 
 /**
@@ -62,17 +64,22 @@ public class ZWebView extends BridgeWebView {
 
         setWebChromeClient(new WebChromeClient());
 
-        WebSettings webSettings = getSettings();
-        webSettings.setJavaScriptEnabled(true);
-        webSettings.setCacheMode(WebSettings.LOAD_NO_CACHE);
+        WebSettings webSetting = getSettings();
+        webSetting.setJavaScriptEnabled(true);//支持JS
+        webSetting.setJavaScriptCanOpenWindowsAutomatically(true);//支持通过JS打开新窗口 
+        webSetting.setCacheMode(WebSettings.LOAD_NO_CACHE);//关闭webview中缓存 
+        webSetting.setAllowFileAccess(true);    //设置可以访问文件 
+        webSetting.setAppCacheEnabled(true);    //开启 Application Caches 功能
+        webSetting.setDomStorageEnabled(true);  // 开启 DOM storage API 功能
+        webSetting.setDatabaseEnabled(true);    //开启 database storage API 功能
+        webSetting.setGeolocationEnabled(true);
         setHorizontalScrollBarEnabled(false);
-        //webView.addJavascriptInterface(new JsInterUtil(), "javautil");
         setHorizontalScrollbarOverlay(true);
         setScrollBarStyle(WebView.SCROLLBARS_OUTSIDE_OVERLAY);
 
         // webview从5.0开始默认不允许混合模式,https中不能加载http资源,需要设置开启。
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            webSettings.setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
+            webSetting.setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
         }
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
@@ -201,7 +208,7 @@ public class ZWebView extends BridgeWebView {
         group.addView(container, index, this.getLayoutParams());
         container.addView(this, new FrameLayout.LayoutParams(AbsoluteLayout.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
         proBar = (ProgressBar) LayoutInflater.from(getContext()).inflate(R.layout.zwebview_view_webview_progressbar, null);
-        container.addView(proBar, new FrameLayout.LayoutParams(AbsoluteLayout.LayoutParams.MATCH_PARENT, dip2px(getContext(), 2)));
+        container.addView(proBar, new FrameLayout.LayoutParams(AbsoluteLayout.LayoutParams.MATCH_PARENT, dip2px(getContext(), 4)));
         webChromeClientWrapper.setProgressBar(proBar);
         webViewClientWrapper.setProgressBar(proBar);
         return this;

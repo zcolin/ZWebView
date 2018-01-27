@@ -6,7 +6,7 @@
  *   date     18-1-9 上午8:51
  * ********************************************************
  */
-package zwebview.zcolin.com.zwebview;
+package com.zcolin.zwebview;
 
 import android.app.AlertDialog;
 import android.graphics.Bitmap;

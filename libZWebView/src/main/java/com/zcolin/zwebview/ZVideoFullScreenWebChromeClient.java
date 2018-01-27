@@ -7,7 +7,7 @@
  * ********************************************************
  */
 
-package zwebview.zcolin.com.zwebview;
+package com.zcolin.zwebview;
 
 import android.app.Activity;
 import android.content.pm.ActivityInfo;

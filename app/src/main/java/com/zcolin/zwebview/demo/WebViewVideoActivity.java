@@ -6,15 +6,15 @@
  *   date     18-1-9 上午8:51
  * ********************************************************
  */
-package com.zcolin.ui.demo;
+package com.zcolin.zwebview.demo;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.KeyEvent;
 
 import com.fosung.ui.R;
+import com.zcolin.zwebview.ZWebView;
 
-import zwebview.zcolin.com.zwebview.ZWebView;
 
 /**
  * 带JsBridge的webview的Demo
@@ -29,8 +29,9 @@ public class WebViewVideoActivity extends AppCompatActivity {
 
         webView = findViewById(R.id.webView);
         webView.setSupportVideoFullScreen(this);
+        webView.setSupportProgressBar();
 
-        webView.loadUrl("http://dyjy.85ido.com:8080/");
+        webView.loadUrl("http://app.html5.qq.com/navi/index");
     }
 
     @Override

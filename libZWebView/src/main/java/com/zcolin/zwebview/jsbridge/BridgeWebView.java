@@ -6,7 +6,7 @@
  *   date     18-1-9 上午8:51
  * ********************************************************
  */
-package zwebview.zcolin.com.zwebview.jsbridge;
+package com.zcolin.zwebview.jsbridge;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -31,8 +31,8 @@ public class BridgeWebView extends WebView implements WebViewJavascriptBridge {
 
     public static final String toLoadJs = "WebViewJavascriptBridge.js";
     Map<String, CallBackFunction> responseCallbacks = new HashMap<String, CallBackFunction>();
-    Map<String, BridgeHandler>    messageHandlers   = new HashMap<String, BridgeHandler>();
-    BridgeHandler                 defaultHandler    = new DefaultHandler();
+    Map<String, BridgeHandler>                                          messageHandlers   = new HashMap<String, BridgeHandler>();
+    BridgeHandler                                                       defaultHandler    = new DefaultHandler();
 
     private List<Message> startupMessage = new ArrayList<Message>();
 

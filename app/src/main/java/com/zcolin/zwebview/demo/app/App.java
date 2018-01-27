@@ -7,7 +7,7 @@
  * ********************************************************
  */
 
-package com.zcolin.ui.demo.app;
+package com.zcolin.zwebview.demo.app;
 
 import com.zcolin.frame.BuildConfig;
 import com.zcolin.frame.app.BaseApp;

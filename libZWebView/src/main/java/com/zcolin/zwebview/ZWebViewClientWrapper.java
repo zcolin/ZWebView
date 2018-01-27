@@ -6,7 +6,7 @@
  *   date     18-1-9 上午8:51
  * ********************************************************
  */
-package zwebview.zcolin.com.zwebview;
+package com.zcolin.zwebview;
 
 import android.graphics.Bitmap;
 import android.net.http.SslError;
@@ -25,7 +25,7 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ProgressBar;
 
-import zwebview.zcolin.com.zwebview.jsbridge.BridgeWebViewClient;
+import com.zcolin.zwebview.jsbridge.BridgeWebViewClient;
 
 
 /**
