@@ -11,7 +11,7 @@ android {
     }
 
     defaultConfig {
-        applicationId "com.zcolin.ui.demo"
+        applicationId "com.zcolin.zwebview.demo"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode rootProject.ext.versionCode
