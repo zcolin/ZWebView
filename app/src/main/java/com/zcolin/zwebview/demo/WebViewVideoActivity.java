@@ -29,7 +29,9 @@ public class WebViewVideoActivity extends AppCompatActivity {
 
         webView = findViewById(R.id.webView);
         webView.setSupportVideoFullScreen(this);
-        webView.setSupportProgressBar();
+        webView.setSupportCircleProgressBar();
+        webView.setSupportHorizontalProgressBar();
+        webView.setSupportCircleProgressBar();
 
         webView.loadUrl("http://app.html5.qq.com/navi/index");
     }

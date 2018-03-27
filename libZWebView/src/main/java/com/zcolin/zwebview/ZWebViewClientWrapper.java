@@ -33,7 +33,8 @@ import com.zcolin.zwebview.jsbridge.BridgeWebViewClient;
  */
 class ZWebViewClientWrapper extends BridgeWebViewClient {
     private WebViewClient webViewClient;
-    private ProgressBar   proBar;
+    private ProgressBar   horizontalProBar;
+    private View          circleProBar;
 
     ZWebViewClientWrapper(WebViewClient webViewClient) {
         this.webViewClient = webViewClient;
@@ -48,8 +49,13 @@ class ZWebViewClientWrapper extends BridgeWebViewClient {
         return this;
     }
 
-    public ZWebViewClientWrapper setProgressBar(ProgressBar bar) {
-        this.proBar = bar;
+    public ZWebViewClientWrapper setHorizontalProgressBar(ProgressBar bar) {
+        this.horizontalProBar = bar;
+        return this;
+    }
+
+    public ZWebViewClientWrapper setCircleProgressBar(View bar) {
+        this.circleProBar = bar;
         return this;
     }
 
@@ -75,8 +81,11 @@ class ZWebViewClientWrapper extends BridgeWebViewClient {
     @Override
     public void onPageStarted(WebView view, String url, Bitmap favicon) {
         super.onPageStarted(view, url, favicon);
-        if (proBar != null) {
-            proBar.setVisibility(View.VISIBLE);
+        if (horizontalProBar != null) {
+            horizontalProBar.setVisibility(View.VISIBLE);
+        }
+        if (circleProBar != null) {
+            circleProBar.setVisibility(View.VISIBLE);
         }
         webViewClient.onPageStarted(view, url, favicon);
     }
@@ -84,8 +93,11 @@ class ZWebViewClientWrapper extends BridgeWebViewClient {
     @Override
     public void onPageFinished(WebView view, String url) {
         super.onPageFinished(view, url);
-        if (proBar != null) {
-            proBar.setVisibility(View.GONE);
+        if (horizontalProBar != null) {
+            horizontalProBar.setVisibility(View.GONE);
+        }
+        if (circleProBar != null) {
+            circleProBar.setVisibility(View.GONE);
         }
         webViewClient.onPageFinished(view, url);
     }

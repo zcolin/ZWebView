@@ -29,6 +29,7 @@ import android.webkit.WebViewClient;
 import android.widget.AbsoluteLayout;
 import android.widget.FrameLayout;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 
 import com.zcolin.zwebview.jsbridge.BridgeWebView;
 
@@ -42,7 +43,8 @@ public class ZWebView extends BridgeWebView {
 
     private ZWebViewClientWrapper   webViewClientWrapper;
     private ZWebChromeClientWrapper webChromeClientWrapper;
-    private ProgressBar             proBar;            //加载進度条
+    private ProgressBar             horizontalProBar;            //横向加载進度条
+    private View                    circleProBar;            //圆形加载進度条
     private boolean                 isSupportJsBridge;
     private boolean                 isSupportH5Location;
 
@@ -90,7 +92,8 @@ public class ZWebView extends BridgeWebView {
     @Override
     public void setWebViewClient(@NonNull WebViewClient webViewClient) {
         this.webViewClientWrapper = new ZWebViewClientWrapper(webViewClient);
-        webViewClientWrapper.setProgressBar(proBar);
+        webViewClientWrapper.setHorizontalProgressBar(horizontalProBar);
+        webViewClientWrapper.setCircleProgressBar(circleProBar);
         if (isSupportJsBridge) {
             webViewClientWrapper.setSupportJsBridge();
         }
@@ -107,7 +110,7 @@ public class ZWebView extends BridgeWebView {
             this.webChromeClientWrapper = new ZWebChromeClientWrapper(webChromeClient);
         }
 
-        webChromeClientWrapper.setProgressBar(proBar);
+        webChromeClientWrapper.setHorizontalProgressBar(horizontalProBar);
         if (isSupportH5Location) {
             webChromeClientWrapper.setSupportH5Location();
         }
@@ -200,17 +203,35 @@ public class ZWebView extends BridgeWebView {
     /**
      * 支持显示进度条
      */
-    public ZWebView setSupportProgressBar() {
+    public ZWebView setSupportCircleProgressBar() {
+        ViewGroup group = (ViewGroup) this.getParent();
+        RelativeLayout container = new RelativeLayout(getContext());
+        int index = group.indexOfChild(this);
+        group.removeView(this);
+        group.addView(container, index, this.getLayoutParams());
+        container.addView(this, new RelativeLayout.LayoutParams(AbsoluteLayout.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+        circleProBar = LayoutInflater.from(getContext()).inflate(R.layout.zwebview_view_webview_circle_progressbar, null);
+        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        params.addRule(RelativeLayout.CENTER_IN_PARENT);
+        container.addView(circleProBar, params);
+        webViewClientWrapper.setCircleProgressBar(circleProBar);
+        return this;
+    }
+
+    /**
+     * 支持显示进度条
+     */
+    public ZWebView setSupportHorizontalProgressBar() {
         ViewGroup group = (ViewGroup) this.getParent();
         FrameLayout container = new FrameLayout(getContext());
         int index = group.indexOfChild(this);
         group.removeView(this);
         group.addView(container, index, this.getLayoutParams());
         container.addView(this, new FrameLayout.LayoutParams(AbsoluteLayout.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
-        proBar = (ProgressBar) LayoutInflater.from(getContext()).inflate(R.layout.zwebview_view_webview_progressbar, null);
-        container.addView(proBar, new FrameLayout.LayoutParams(AbsoluteLayout.LayoutParams.MATCH_PARENT, dip2px(getContext(), 4)));
-        webChromeClientWrapper.setProgressBar(proBar);
-        webViewClientWrapper.setProgressBar(proBar);
+        horizontalProBar = (ProgressBar) LayoutInflater.from(getContext()).inflate(R.layout.zwebview_view_webview_horizontal_progressbar, null);
+        container.addView(horizontalProBar, new FrameLayout.LayoutParams(AbsoluteLayout.LayoutParams.MATCH_PARENT, dip2px(getContext(), 4)));
+        webChromeClientWrapper.setHorizontalProgressBar(horizontalProBar);
+        webViewClientWrapper.setHorizontalProgressBar(horizontalProBar);
         return this;
     }
 
