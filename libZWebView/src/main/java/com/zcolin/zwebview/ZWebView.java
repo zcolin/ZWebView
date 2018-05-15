@@ -10,11 +10,11 @@ package com.zcolin.zwebview;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
+import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.util.AttributeSet;
@@ -77,7 +77,7 @@ public class ZWebView extends BridgeWebView {
         setHorizontalScrollbarOverlay(true);
         setScrollBarStyle(WebView.SCROLLBARS_OUTSIDE_OVERLAY);
 
-        if (Build.VERSION.SDK_INT >=  Build.VERSION_CODES.JELLY_BEAN) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
             webSetting.setAllowUniversalAccessFromFileURLs(true);//解决跨域问题
         }
 
@@ -203,20 +203,37 @@ public class ZWebView extends BridgeWebView {
     }
 
     /**
-     * 支持显示进度条
+     * 支持显示自定义加载View
      */
-    public ZWebView setSupportCircleProgressBar() {
+    public ZWebView setSupportCustomProgressBar(@LayoutRes int layoutId) {
+        setSupportCustomProgressBar(LayoutInflater.from(getContext()).inflate(layoutId, null));
+        return this;
+    }
+
+    /**
+     * 支持显示自定义加载View
+     */
+    public ZWebView setSupportCustomProgressBar(View view) {
         ViewGroup group = (ViewGroup) this.getParent();
         RelativeLayout container = new RelativeLayout(getContext());
         int index = group.indexOfChild(this);
         group.removeView(this);
         group.addView(container, index, this.getLayoutParams());
         container.addView(this, new RelativeLayout.LayoutParams(AbsoluteLayout.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
-        circleProBar = LayoutInflater.from(getContext()).inflate(R.layout.zwebview_view_webview_circle_progressbar, null);
+        circleProBar = view;
         RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         params.addRule(RelativeLayout.CENTER_IN_PARENT);
         container.addView(circleProBar, params);
         webViewClientWrapper.setCircleProgressBar(circleProBar);
+        return this;
+    }
+
+
+    /**
+     * 支持圆形显示进度条
+     */
+    public ZWebView setSupportCircleProgressBar() {
+        setSupportCustomProgressBar(R.layout.zwebview_view_webview_circle_progressbar);
         return this;
     }
 
@@ -332,33 +349,6 @@ public class ZWebView extends BridgeWebView {
             return client.isCustomViewShow();
         }
         return false;
-    }
-
-
-    /**
-     * 注册启动Activity的web交互
-     */
-    public ZWebView registerStartActivity(final Activity activity) {
-        registerHandler("startActivity", (data, function) -> {
-            try {
-                Intent intent = new Intent();
-                ComponentName componentName = new ComponentName(activity.getPackageName(), activity.getPackageName() + "build/intermediates/exploded-aar/com"
-                        + ".android.support/support-v4/23.2.1/res" + data);
-                intent.setComponent(componentName);
-                activity.startActivity(intent);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        });
-        return this;
-    }
-
-    /**
-     * 注册启动Activity的web交互
-     */
-    public ZWebView registerFinishActivity(final Activity activity) {
-        registerHandler("finishActivity", (data, function) -> activity.finish());
-        return this;
     }
 
     @Override
