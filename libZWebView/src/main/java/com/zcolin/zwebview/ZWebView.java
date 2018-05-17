@@ -26,7 +26,6 @@ import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import android.widget.AbsoluteLayout;
 import android.widget.FrameLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
@@ -182,12 +181,12 @@ public class ZWebView extends BridgeWebView {
         //将原来的布局之间添加一层，用来盛放webView和视频全屏控件
         group.removeView(this);
         group.addView(container, index, this.getLayoutParams());
-        container.addView(this, new FrameLayout.LayoutParams(AbsoluteLayout.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+        container.addView(this, new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
 
         //添加视频ViewContainer
         FrameLayout flCustomContainer = new FrameLayout(getContext());
         flCustomContainer.setVisibility(View.INVISIBLE);
-        container.addView(flCustomContainer, new FrameLayout.LayoutParams(AbsoluteLayout.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+        container.addView(flCustomContainer, new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
 
         View videoProgressView = LayoutInflater.from(activity).inflate(R.layout.zwebview_view_webview_video_progress, null);
         webChromeClientWrapper = new ZVideoFullScreenWebChromeClient(webChromeClientWrapper.getWebChromeClient(), activity, this, flCustomContainer, 
@@ -219,9 +218,9 @@ public class ZWebView extends BridgeWebView {
         int index = group.indexOfChild(this);
         group.removeView(this);
         group.addView(container, index, this.getLayoutParams());
-        container.addView(this, new RelativeLayout.LayoutParams(AbsoluteLayout.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+        container.addView(this, new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
         circleProBar = view;
-        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
         params.addRule(RelativeLayout.CENTER_IN_PARENT);
         container.addView(circleProBar, params);
         webViewClientWrapper.setCircleProgressBar(circleProBar);
@@ -246,9 +245,9 @@ public class ZWebView extends BridgeWebView {
         int index = group.indexOfChild(this);
         group.removeView(this);
         group.addView(container, index, this.getLayoutParams());
-        container.addView(this, new FrameLayout.LayoutParams(AbsoluteLayout.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+        container.addView(this, new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
         horizontalProBar = (ProgressBar) LayoutInflater.from(getContext()).inflate(R.layout.zwebview_view_webview_horizontal_progressbar, null);
-        container.addView(horizontalProBar, new FrameLayout.LayoutParams(AbsoluteLayout.LayoutParams.MATCH_PARENT, dip2px(getContext(), 4)));
+        container.addView(horizontalProBar, new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, dip2px(getContext(), 4)));
         webChromeClientWrapper.setHorizontalProgressBar(horizontalProBar);
         webViewClientWrapper.setHorizontalProgressBar(horizontalProBar);
         return this;
