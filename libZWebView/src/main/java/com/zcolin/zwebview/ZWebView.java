@@ -129,17 +129,17 @@ public class ZWebView extends BridgeWebView {
      *      webView.processResult(requestCode, resultCode, intent);
      *  }
      * </pre>
-     * 
-     * @param pickFile 文件选择自定义处理方式
      *
-     * pickFile参考如下
-     * Intent chooserIntent = new Intent(Intent.ACTION_GET_CONTENT);
-     * chooserIntent.setType(acceptType);
-     * if (fragment != null) {
-     *      fragment.startActivityForResult(chooserIntent, REQUEST_CODE);
-     * } else if (activity != null) {
-     *      activity.startActivityForResult(chooserIntent, REQUEST_CODE);
-     * }
+     * @param pickFile 文件选择自定义处理方式
+     *                 <p>
+     *                 pickFile参考如下
+     *                 Intent chooserIntent = new Intent(Intent.ACTION_GET_CONTENT);
+     *                 chooserIntent.setType(acceptType);
+     *                 if (fragment != null) {
+     *                 fragment.startActivityForResult(chooserIntent, REQUEST_CODE);
+     *                 } else if (activity != null) {
+     *                 activity.startActivityForResult(chooserIntent, REQUEST_CODE);
+     *                 }
      */
     public ZWebView setSupportChooseFile(Activity activity, IPickFile pickFile) {
         webChromeClientWrapper = new ZChooseFileWebChromeClientWrapper(webChromeClientWrapper.getWebChromeClient(), activity, pickFile);
@@ -175,15 +175,15 @@ public class ZWebView extends BridgeWebView {
      * </pre>
      *
      * @param pickFile 文件选择自定义处理方式
-     *                 
-     * pickFile参考如下
-     * Intent chooserIntent = new Intent(Intent.ACTION_GET_CONTENT);
-     * chooserIntent.setType(acceptType);
-     * if (fragment != null) {
-     *      fragment.startActivityForResult(chooserIntent, REQUEST_CODE);
-     * } else if (activity != null) {
-     *      activity.startActivityForResult(chooserIntent, REQUEST_CODE);
-     * }                 
+     *                 <p>
+     *                 pickFile参考如下
+     *                 Intent chooserIntent = new Intent(Intent.ACTION_GET_CONTENT);
+     *                 chooserIntent.setType(acceptType);
+     *                 if (fragment != null) {
+     *                 fragment.startActivityForResult(chooserIntent, REQUEST_CODE);
+     *                 } else if (activity != null) {
+     *                 activity.startActivityForResult(chooserIntent, REQUEST_CODE);
+     *                 }
      */
     public ZWebView setSupportChooseFile(Fragment fragment, IPickFile pickFile) {
         webChromeClientWrapper = new ZChooseFileWebChromeClientWrapper(webChromeClientWrapper.getWebChromeClient(), fragment, pickFile);
@@ -377,6 +377,27 @@ public class ZWebView extends BridgeWebView {
         }
         return false;
     }
+
+    /**
+     * 支持文件选择的时候需要在onActivity中调用此函数
+     */
+    public boolean processResult(Uri uri) {
+        if (webChromeClientWrapper instanceof ZChooseFileWebChromeClientWrapper) {
+            return ((ZChooseFileWebChromeClientWrapper) webChromeClientWrapper).processResult(uri);
+        }
+        return false;
+    }
+
+    /**
+     * 支持文件选择的时候需要在onActivity中调用此函数
+     */
+    public boolean processResult(Uri[] uris) {
+        if (webChromeClientWrapper instanceof ZChooseFileWebChromeClientWrapper) {
+            return ((ZChooseFileWebChromeClientWrapper) webChromeClientWrapper).processResult(uris);
+        }
+        return false;
+    }
+
 
     /**
      * 如果在视频全屏播放状态，取消全屏播放

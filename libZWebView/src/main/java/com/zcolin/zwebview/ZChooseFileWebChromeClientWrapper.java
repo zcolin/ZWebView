@@ -106,7 +106,7 @@ public class ZChooseFileWebChromeClientWrapper extends ZWebChromeClientWrapper {
     /**
      * 文件单选执行
      */
-    public void processResult(Uri result) {
+    public boolean processResult(Uri result) {
         if (mUploadMessage != null) {
             mUploadMessage.onReceiveValue(result);
             mUploadMessage = null;
@@ -114,16 +114,18 @@ public class ZChooseFileWebChromeClientWrapper extends ZWebChromeClientWrapper {
             mUploadMessages.onReceiveValue(result == null ? null : new Uri[]{result});
             mUploadMessages = null;
         }
+        return true;
     }
 
     /**
      * 文件多选执行
      */
-    public void processResult(Uri[] result) {
+    public boolean processResult(Uri[] result) {
         if (mUploadMessages != null) {
             mUploadMessages.onReceiveValue(result);
             mUploadMessages = null;
         }
+        return true;
     }
 
     /**
