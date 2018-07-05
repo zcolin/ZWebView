@@ -31,11 +31,12 @@ public class ZChooseFileWebChromeClientWrapper extends ZWebChromeClientWrapper {
     private ValueCallback<Uri>   mUploadMessage;
     private Fragment             fragment;
     private Activity             activity;
+    private IPickFile            pickFile;
 
     /**
      * Context 必须为Fragment或者Activity的子类
      */
-    public ZChooseFileWebChromeClientWrapper(WebChromeClient webChromeClient, Fragment fragment) {
+    public ZChooseFileWebChromeClientWrapper(WebChromeClient webChromeClient, Fragment fragment, IPickFile pickFile) {
         super(webChromeClient);
         this.fragment = fragment;
     }
@@ -43,7 +44,7 @@ public class ZChooseFileWebChromeClientWrapper extends ZWebChromeClientWrapper {
     /**
      * Context 必须为Fragment或者Activity的子类
      */
-    public ZChooseFileWebChromeClientWrapper(WebChromeClient webChromeClient, Activity activity) {
+    public ZChooseFileWebChromeClientWrapper(WebChromeClient webChromeClient, Activity activity, IPickFile pickFile) {
         super(webChromeClient);
         this.activity = activity;
     }
@@ -88,13 +89,17 @@ public class ZChooseFileWebChromeClientWrapper extends ZWebChromeClientWrapper {
     private void pickFile(ValueCallback<Uri[]> filePathCallbacks, ValueCallback<Uri> filePathCallback, String acceptType) {
         mUploadMessage = filePathCallback;
         mUploadMessages = filePathCallbacks;
-        Intent chooserIntent = new Intent(Intent.ACTION_GET_CONTENT);
-        chooserIntent.setType(acceptType);
 
-        if (fragment != null) {
-            fragment.startActivityForResult(chooserIntent, REQUEST_CODE);
-        } else if (activity != null) {
-            activity.startActivityForResult(chooserIntent, REQUEST_CODE);
+        if (pickFile != null) {
+            pickFile.pickFile(acceptType, REQUEST_CODE);
+        } else {
+            Intent chooserIntent = new Intent(Intent.ACTION_GET_CONTENT);
+            chooserIntent.setType(acceptType);
+            if (fragment != null) {
+                fragment.startActivityForResult(chooserIntent, REQUEST_CODE);
+            } else if (activity != null) {
+                activity.startActivityForResult(chooserIntent, REQUEST_CODE);
+            }
         }
     }
 
