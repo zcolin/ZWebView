@@ -51,14 +51,12 @@ public class WebViewActivity extends FragmentActivity implements OnClickListener
         webView.setSupportJsBridge();
         webView.setSupportChooseFile(mActivity);
         webView.setDefaultHandler(new DefaultHandler());//如果JS调用send方法，会走到DefaultHandler里
-        webView.registerHandler("submitFromWeb", (data, function) -> new AlertDialog.Builder(WebViewActivity.this).setMessage("监听到网页传入数据：" + data)
-                                                                                                                  .setPositiveButton("确定", (dialog, which) ->
-                                                                                                                          function
-                                                                                                                          .onCallBack("java 返回数据！！！"))
-                                                                                                                  .create()
-                                                                                                                  .show());
-        webView.registerStartActivity(mActivity);
-        webView.registerFinishActivity(mActivity);
+        webView.registerHandler("submitFromWeb", (data, function) -> {
+            new AlertDialog.Builder(WebViewActivity.this).setMessage("监听到网页传入数据：" + data)
+                                                         .setPositiveButton("确定", (dialog, which) -> function.onCallBack("java 返回数据！！！"))
+                                                         .create()
+                                                         .show();
+        });
     }
 
     public void loadUrl() {
