@@ -1,5 +1,5 @@
 # ZWebView
-##封装常用功能
+## 封装常用功能
 1. 支持全屏播放视频
 1. 支持打开网页时顶部带有导航条
 1. 支持文件选择
@@ -17,14 +17,14 @@ dependencies {
 工程的build.gradle中添加
 ```
 allprojects {
-		repositories {
-			...
-			maven { url 'https://jitpack.io' }
-		}
+	repositories {
+		...
+		maven { url 'https://jitpack.io' }
 	}
+}
 ```
 
-##USAGE
+## USAGE
 
 ZWebView：
 ```
