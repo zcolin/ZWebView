@@ -332,6 +332,7 @@ public class ZWebView extends BridgeWebView {
         group.addView(container, index, this.getLayoutParams());
         container.addView(this, new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
         errorView = view;
+        errorView.setVisibility(GONE);
         RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
         params.addRule(RelativeLayout.CENTER_IN_PARENT);
         container.addView(errorView, params);
