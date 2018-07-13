@@ -34,7 +34,7 @@ import com.zcolin.zwebview.jsbridge.BridgeWebViewClient;
 class ZWebViewClientWrapper extends BridgeWebViewClient {
     private WebViewClient webViewClient;
     private ProgressBar   horizontalProBar;
-    private View          circleProBar;
+    private View          customProBar;
     private View          errorView;
 
     ZWebViewClientWrapper(WebViewClient webViewClient) {
@@ -55,8 +55,8 @@ class ZWebViewClientWrapper extends BridgeWebViewClient {
         return this;
     }
 
-    public ZWebViewClientWrapper setCircleProgressBar(View bar) {
-        this.circleProBar = bar;
+    public ZWebViewClientWrapper setCustomProgressBar(View bar) {
+        this.customProBar = bar;
         return this;
     }
 
@@ -90,8 +90,8 @@ class ZWebViewClientWrapper extends BridgeWebViewClient {
         if (horizontalProBar != null) {
             horizontalProBar.setVisibility(View.VISIBLE);
         }
-        if (circleProBar != null) {
-            circleProBar.setVisibility(View.VISIBLE);
+        if (customProBar != null) {
+            customProBar.setVisibility(View.VISIBLE);
         }
         webViewClient.onPageStarted(view, url, favicon);
     }
@@ -102,8 +102,8 @@ class ZWebViewClientWrapper extends BridgeWebViewClient {
         if (horizontalProBar != null) {
             horizontalProBar.setVisibility(View.GONE);
         }
-        if (circleProBar != null) {
-            circleProBar.setVisibility(View.GONE);
+        if (customProBar != null) {
+            customProBar.setVisibility(View.GONE);
         }
         webViewClient.onPageFinished(view, url);
     }

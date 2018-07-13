@@ -95,7 +95,7 @@ public class ZWebView extends BridgeWebView {
     public void setWebViewClient(@NonNull WebViewClient webViewClient) {
         this.webViewClientWrapper = new ZWebViewClientWrapper(webViewClient);
         webViewClientWrapper.setHorizontalProgressBar(horizontalProBar);
-        webViewClientWrapper.setCircleProgressBar(circleProBar);
+        webViewClientWrapper.setCustomProgressBar(circleProBar);
         if (isSupportJsBridge) {
             webViewClientWrapper.setSupportJsBridge();
         }
@@ -278,7 +278,7 @@ public class ZWebView extends BridgeWebView {
         RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
         params.addRule(RelativeLayout.CENTER_IN_PARENT);
         container.addView(circleProBar, params);
-        webViewClientWrapper.setCircleProgressBar(circleProBar);
+        webViewClientWrapper.setCustomProgressBar(circleProBar);
         return this;
     }
 
