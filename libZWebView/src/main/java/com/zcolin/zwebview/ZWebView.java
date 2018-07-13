@@ -46,6 +46,7 @@ public class ZWebView extends BridgeWebView {
     private View                    circleProBar;            //圆形加载進度条
     private boolean                 isSupportJsBridge;
     private boolean                 isSupportH5Location;
+    private View                    errorView;
 
     public ZWebView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -258,15 +259,15 @@ public class ZWebView extends BridgeWebView {
     /**
      * 支持显示自定义加载View
      */
-    public ZWebView setSupportCustomProgressBar(@LayoutRes int layoutId) {
-        setSupportCustomProgressBar(LayoutInflater.from(getContext()).inflate(layoutId, null));
+    public ZWebView setSupportProgressBar(@LayoutRes int layoutId) {
+        setSupportProgressBar(LayoutInflater.from(getContext()).inflate(layoutId, null));
         return this;
     }
 
     /**
      * 支持显示自定义加载View
      */
-    public ZWebView setSupportCustomProgressBar(View view) {
+    public ZWebView setSupportProgressBar(View view) {
         ViewGroup group = (ViewGroup) this.getParent();
         RelativeLayout container = new RelativeLayout(getContext());
         int index = group.indexOfChild(this);
@@ -286,7 +287,7 @@ public class ZWebView extends BridgeWebView {
      * 支持圆形显示进度条
      */
     public ZWebView setSupportCircleProgressBar() {
-        setSupportCustomProgressBar(R.layout.zwebview_view_webview_circle_progressbar);
+        setSupportProgressBar(R.layout.zwebview_view_webview_circle_progressbar);
         return this;
     }
 
@@ -305,6 +306,54 @@ public class ZWebView extends BridgeWebView {
         webChromeClientWrapper.setHorizontalProgressBar(horizontalProBar);
         webViewClientWrapper.setHorizontalProgressBar(horizontalProBar);
         return this;
+    }
+
+    /**
+     * 支持显示加载失败view
+     */
+    public ZWebView setSupportErrorView() {
+        View errorView = LayoutInflater.from(getContext()).inflate(R.layout.zwebview_view_webview_error, null);
+        errorView.findViewById(R.id.ll_container).setOnClickListener(v -> {
+            reload();
+        });
+        setSupportErrorView(errorView);
+        return this;
+    }
+
+
+    /**
+     * 支持显示加载失败view
+     */
+    public ZWebView setSupportErrorView(View view) {
+        ViewGroup group = (ViewGroup) this.getParent();
+        RelativeLayout container = new RelativeLayout(getContext());
+        int index = group.indexOfChild(this);
+        group.removeView(this);
+        group.addView(container, index, this.getLayoutParams());
+        container.addView(this, new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+        errorView = view;
+        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        params.addRule(RelativeLayout.CENTER_IN_PARENT);
+        container.addView(errorView, params);
+        webViewClientWrapper.setErrorView(errorView);
+        return this;
+    }
+
+    /**
+     * 隐藏errorview
+     */
+    public void hideErrorView() {
+        if (errorView != null) {
+            errorView.setVisibility(GONE);
+        }
+    }
+
+
+    @Override
+    public void reload() {
+        webViewClientWrapper.reset();
+        hideErrorView();
+        super.reload();
     }
 
     /**
@@ -423,6 +472,13 @@ public class ZWebView extends BridgeWebView {
             return client.isCustomViewShow();
         }
         return false;
+    }
+
+    /**
+     * 是否已经注入了js
+     */
+    public boolean isInjectJSBridge() {
+        return webViewClientWrapper.isInjectJSBridge();
     }
 
     @Override

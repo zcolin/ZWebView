@@ -35,6 +35,7 @@ class ZWebViewClientWrapper extends BridgeWebViewClient {
     private WebViewClient webViewClient;
     private ProgressBar   horizontalProBar;
     private View          circleProBar;
+    private View          errorView;
 
     ZWebViewClientWrapper(WebViewClient webViewClient) {
         this.webViewClient = webViewClient;
@@ -56,6 +57,11 @@ class ZWebViewClientWrapper extends BridgeWebViewClient {
 
     public ZWebViewClientWrapper setCircleProgressBar(View bar) {
         this.circleProBar = bar;
+        return this;
+    }
+
+    public ZWebViewClientWrapper setErrorView(View errorView) {
+        this.errorView = errorView;
         return this;
     }
 
@@ -105,7 +111,24 @@ class ZWebViewClientWrapper extends BridgeWebViewClient {
     @Override
     public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
         super.onReceivedError(view, errorCode, description, failingUrl);
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+            if (errorView != null) {
+                errorView.setVisibility(View.VISIBLE);
+            }
+        }
         webViewClient.onReceivedError(view, errorCode, description, failingUrl);
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.M)
+    @Override
+    public void onReceivedError(WebView view, WebResourceRequest request, WebResourceError error) {
+        super.onReceivedError(view, request, error);
+        if (request.isForMainFrame()) {
+            if (errorView != null) {
+                errorView.setVisibility(View.VISIBLE);
+            }
+        }
+        webViewClient.onReceivedError(view, request, error);
     }
 
     @Override
@@ -135,11 +158,6 @@ class ZWebViewClientWrapper extends BridgeWebViewClient {
         webViewClient.onTooManyRedirects(view, cancelMsg, continueMsg);
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.M)
-    @Override
-    public void onReceivedError(WebView view, WebResourceRequest request, WebResourceError error) {
-        webViewClient.onReceivedError(view, request, error);
-    }
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override

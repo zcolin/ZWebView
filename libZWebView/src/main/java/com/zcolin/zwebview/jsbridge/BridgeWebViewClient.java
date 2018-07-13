@@ -11,6 +11,7 @@ package com.zcolin.zwebview.jsbridge;
 import android.graphics.Bitmap;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
+import android.webkit.WebResourceError;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -23,6 +24,8 @@ import java.net.URLDecoder;
  */
 public class BridgeWebViewClient extends WebViewClient {
     private boolean isSupportJsBridge;
+    private boolean isReceiveError;
+    private boolean isInjectJSBridge;
 
     /**
      * 支持JsBridge
@@ -71,7 +74,10 @@ public class BridgeWebViewClient extends WebViewClient {
     public void onPageFinished(WebView view, String url) {
         super.onPageFinished(view, url);
         if (isSupportJsBridge) {
-            BridgeUtil.webViewLoadLocalJs(view, BridgeWebView.toLoadJs);
+            if (!isReceiveError) {
+                BridgeUtil.webViewLoadLocalJs(view, BridgeWebView.toLoadJs);
+                isInjectJSBridge = true;
+            }
 
             if (view instanceof BridgeWebView) {
                 BridgeWebView webView = (BridgeWebView) view;
@@ -87,6 +93,23 @@ public class BridgeWebViewClient extends WebViewClient {
 
     @Override
     public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
-        super.onReceivedError(view, errorCode, description, failingUrl);
+        isReceiveError = true;
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.M)
+    @Override
+    public void onReceivedError(WebView view, WebResourceRequest request, WebResourceError error) {
+        if (request.isForMainFrame()) {
+            isReceiveError = true;
+        }
+    }
+
+    public boolean isInjectJSBridge() {
+        return isInjectJSBridge;
+    }
+
+    public void reset() {
+        isReceiveError = false;
+        isInjectJSBridge = false;
     }
 }
