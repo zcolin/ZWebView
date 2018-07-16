@@ -144,6 +144,9 @@ public class ZVideoFullScreenWebChromeClient extends ZWebChromeClientWrapper {
     }
 
 
+    /**
+     * 视频全屏状态接口
+     */
     public interface CustomViewShowStateListener {
         void show();
 

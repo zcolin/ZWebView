@@ -32,10 +32,11 @@ import com.zcolin.zwebview.jsbridge.BridgeWebViewClient;
  * WebViewClient主要帮助WebView处理各种通知、请求事件的.
  */
 class ZWebViewClientWrapper extends BridgeWebViewClient {
-    private WebViewClient webViewClient;
-    private ProgressBar   horizontalProBar;
-    private View          customProBar;
-    private View          errorView;
+    private WebViewClient         webViewClient;
+    private ProgressBar           horizontalProBar;
+    private View                  customProBar;
+    private View                  errorView;
+    private ZWebView.LoadListener loadListener;
 
     ZWebViewClientWrapper(WebViewClient webViewClient) {
         this.webViewClient = webViewClient;
@@ -47,6 +48,11 @@ class ZWebViewClientWrapper extends BridgeWebViewClient {
 
     public ZWebViewClientWrapper setWebViewClient(WebViewClient webViewClient) {
         this.webViewClient = webViewClient;
+        return this;
+    }
+
+    public ZWebViewClientWrapper setLoadListener(ZWebView.LoadListener listener) {
+        this.loadListener = listener;
         return this;
     }
 
@@ -93,6 +99,11 @@ class ZWebViewClientWrapper extends BridgeWebViewClient {
         if (customProBar != null) {
             customProBar.setVisibility(View.VISIBLE);
         }
+
+        if (loadListener != null) {
+            loadListener.onStart(url);
+        }
+
         webViewClient.onPageStarted(view, url, favicon);
     }
 
@@ -105,6 +116,11 @@ class ZWebViewClientWrapper extends BridgeWebViewClient {
         if (customProBar != null) {
             customProBar.setVisibility(View.GONE);
         }
+
+        if (loadListener != null) {
+            loadListener.onFinish(url);
+        }
+
         webViewClient.onPageFinished(view, url);
     }
 

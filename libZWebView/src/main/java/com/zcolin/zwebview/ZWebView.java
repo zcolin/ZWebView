@@ -43,10 +43,11 @@ public class ZWebView extends BridgeWebView {
     private ZWebViewClientWrapper   webViewClientWrapper;
     private ZWebChromeClientWrapper webChromeClientWrapper;
     private ProgressBar             horizontalProBar;            //横向加载進度条
-    private View                    circleProBar;            //圆形加载進度条
+    private View                    customProBar;                //圆形加载進度条
     private boolean                 isSupportJsBridge;
     private boolean                 isSupportH5Location;
     private View                    errorView;
+    private LoadListener            loadListener;
 
     public ZWebView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -91,11 +92,19 @@ public class ZWebView extends BridgeWebView {
         }
     }
 
+    /**
+     * 设置网页加载监听
+     */
+    public void setLoadListener(LoadListener loadListener) {
+        this.loadListener = loadListener;
+    }
+
     @Override
     public void setWebViewClient(@NonNull WebViewClient webViewClient) {
         this.webViewClientWrapper = new ZWebViewClientWrapper(webViewClient);
         webViewClientWrapper.setHorizontalProgressBar(horizontalProBar);
-        webViewClientWrapper.setCustomProgressBar(circleProBar);
+        webViewClientWrapper.setLoadListener(loadListener);
+        webViewClientWrapper.setCustomProgressBar(customProBar);
         if (isSupportJsBridge) {
             webViewClientWrapper.setSupportJsBridge();
         }
@@ -113,6 +122,7 @@ public class ZWebView extends BridgeWebView {
         }
 
         webChromeClientWrapper.setHorizontalProgressBar(horizontalProBar);
+        webChromeClientWrapper.setLoadListener(loadListener);
         if (isSupportH5Location) {
             webChromeClientWrapper.setSupportH5Location();
         }
@@ -274,11 +284,11 @@ public class ZWebView extends BridgeWebView {
         group.removeView(this);
         group.addView(container, index, this.getLayoutParams());
         container.addView(this, new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
-        circleProBar = view;
+        customProBar = view;
         RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
         params.addRule(RelativeLayout.CENTER_IN_PARENT);
-        container.addView(circleProBar, params);
-        webViewClientWrapper.setCustomProgressBar(circleProBar);
+        container.addView(customProBar, params);
+        webViewClientWrapper.setCustomProgressBar(customProBar);
         return this;
     }
 
@@ -503,5 +513,16 @@ public class ZWebView extends BridgeWebView {
         } catch (Throwable ex) {
             ex.printStackTrace();
         }
+    }
+
+    /**
+     * 网页加载接口
+     */
+    public interface LoadListener {
+        void onStart(String url);
+
+        void onFinish(String url);
+
+        void onProgress(int progress);
     }
 }
