@@ -26,6 +26,7 @@ public class BridgeWebViewClient extends WebViewClient {
     private boolean isSupportJsBridge;
     private boolean isReceiveError;
     private boolean isInjectJSBridge;
+    private OnInjectFinishListener injectFinishListener;
 
     /**
      * 支持JsBridge
@@ -34,6 +35,13 @@ public class BridgeWebViewClient extends WebViewClient {
         isSupportJsBridge = true;
     }
 
+    /**
+     * 设置注入完成监听
+     */
+    public void setOnInjectFinishListener(OnInjectFinishListener listener) {
+        this.injectFinishListener = listener;
+    }
+    
     @Override
     public boolean shouldOverrideUrlLoading(WebView view, String url) {
         if (isSupportJsBridge) {
@@ -77,6 +85,13 @@ public class BridgeWebViewClient extends WebViewClient {
             if (!isReceiveError) {
                 BridgeUtil.webViewLoadLocalJs(view, BridgeWebView.toLoadJs);
                 isInjectJSBridge = true;
+                if (injectFinishListener != null) {
+                    injectFinishListener.onInjectFinish(true);
+                }
+            } else {
+                if (injectFinishListener != null) {
+                    injectFinishListener.onInjectFinish(false);
+                }
             }
 
             if (view instanceof BridgeWebView) {
@@ -111,5 +126,9 @@ public class BridgeWebViewClient extends WebViewClient {
     public void reset() {
         isReceiveError = false;
         isInjectJSBridge = false;
+    }
+
+    public interface OnInjectFinishListener {
+        void onInjectFinish(boolean success);
     }
 }

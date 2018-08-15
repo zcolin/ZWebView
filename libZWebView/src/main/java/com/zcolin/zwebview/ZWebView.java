@@ -31,6 +31,7 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 
 import com.zcolin.zwebview.jsbridge.BridgeWebView;
+import com.zcolin.zwebview.jsbridge.BridgeWebViewClient;
 
 import zwebview.zcolin.com.zwebview.R;
 
@@ -40,14 +41,15 @@ import zwebview.zcolin.com.zwebview.R;
  */
 public class ZWebView extends BridgeWebView {
 
-    private ZWebViewClientWrapper   webViewClientWrapper;
-    private ZWebChromeClientWrapper webChromeClientWrapper;
-    private ProgressBar             horizontalProBar;            //横向加载進度条
-    private View                    customProBar;                //圆形加载進度条
-    private boolean                 isSupportJsBridge;
-    private boolean                 isSupportH5Location;
-    private View                    errorView;
-    private LoadListener            loadListener;
+    private ZWebViewClientWrapper                      webViewClientWrapper;
+    private ZWebChromeClientWrapper                    webChromeClientWrapper;
+    private ProgressBar                                horizontalProBar;            //横向加载進度条
+    private View                                       customProBar;                //圆形加载進度条
+    private boolean                                    isSupportJsBridge;
+    private boolean                                    isSupportH5Location;
+    private View                                       errorView;
+    private LoadListener                               loadListener;
+    private BridgeWebViewClient.OnInjectFinishListener injectFinishListener;
 
     public ZWebView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -123,6 +125,7 @@ public class ZWebView extends BridgeWebView {
 
         webChromeClientWrapper.setHorizontalProgressBar(horizontalProBar);
         webChromeClientWrapper.setLoadListener(loadListener);
+        webViewClientWrapper.setOnInjectFinishListener(injectFinishListener);
         if (isSupportH5Location) {
             webChromeClientWrapper.setSupportH5Location();
         }
@@ -292,6 +295,13 @@ public class ZWebView extends BridgeWebView {
         return this;
     }
 
+    /**
+     * 设置js通讯组件注入完成监听
+     */
+    public void setOnInjectFinishListener(BridgeWebViewClient.OnInjectFinishListener listener) {
+        this.injectFinishListener = listener;
+        webViewClientWrapper.setOnInjectFinishListener(injectFinishListener);
+    }
 
     /**
      * 支持圆形显示进度条
