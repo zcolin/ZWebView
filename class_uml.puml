@@ -1,0 +1,36 @@
+@startuml
+
+
+interface IPickFile {
+    void pickFile(String acceptType, boolean isMulti);
+}
+
+WebChromeClient <-- ZWebChromeClientWrapper
+WebChromeClient <|-- ZWebChromeClientWrapper
+ZWebChromeClientWrapper <|-- ZChooseFileWebChromeClientWrapper
+ZWebChromeClientWrapper <|-- ZVideoFullScreenWebChromeClient
+BridgeWebViewClient <|-- ZWebViewClientWrapper
+BridgeWebView <|-- ZWebView
+ZChooseFileWebChromeClientWrapper --> IPickFile
+WebViewClient <-- ZWebViewClientWrapper
+
+
+WebView <|-- BridgeWebView
+WebViewJavascriptBridge <|.. BridgeWebView 
+WebViewClient <|-- BridgeWebViewClient
+BridgeHandler <|.. DefaultHandler
+BridgeWebView -> BridgeHandler
+BridgeWebView *-- CallBackFunction
+BridgeWebView ..> Message
+
+interface WebViewJavascriptBridge {
+    void send(String data);
+    void send(String data, CallBackFunction responseCallback);
+}
+interface BridgeHandler {
+    void handler(String data, CallBackFunction function);
+}
+interface CallBackFunction {
+    void onCallBack(String data);
+}
+@enduml

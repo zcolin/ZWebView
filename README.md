@@ -25,6 +25,9 @@ allprojects {
 	}
 }
 ```
+class structure
+=
+![](class_uml.png)
 
 ## USAGE
 
