@@ -138,7 +138,7 @@ public class ZChooseFileWebChromeClientWrapper extends ZWebChromeClientWrapper {
             processResult(intent.getData());
             return true;
         }
-        processResult((Uri) null);
+        processResult((Uri) null); 
         return false;
     }
 }
