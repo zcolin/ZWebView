@@ -1,11 +1,12 @@
 package com.zcolin.zwebview.demo;
 
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.view.KeyEvent;
 
 import com.fosung.ui.R;
 import com.zcolin.zwebview.ZWebView;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 
 /**

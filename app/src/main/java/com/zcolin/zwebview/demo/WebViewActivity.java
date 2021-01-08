@@ -3,8 +3,6 @@ package com.zcolin.zwebview.demo;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
-import android.support.v7.app.AlertDialog;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -13,6 +11,9 @@ import com.fosung.ui.R;
 import com.zcolin.frame.util.GsonUtil;
 import com.zcolin.zwebview.ZWebView;
 import com.zcolin.zwebview.jsbridge.DefaultHandler;
+
+import androidx.appcompat.app.AlertDialog;
+import androidx.fragment.app.FragmentActivity;
 
 
 /**

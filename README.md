@@ -12,7 +12,6 @@
 app的build.gradle中添加
 ```
 dependencies {
-    implementation "com.android.support:appcompat-v7:你的版本号"
     implementation 'com.github.zcolin:ZWebView:latest.release'
 }
 ```
@@ -25,9 +24,7 @@ allprojects {
 	}
 }
 ```
-class structure
-=
-![](class_uml.png)
+class structure=![](class_uml.png)
 
 ## USAGE
 
