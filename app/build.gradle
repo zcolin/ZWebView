@@ -45,7 +45,7 @@ android {
         debug {
 
             buildConfigField "boolean", "LOG_DEBUG", "true"// 显示Log
-            buildConfigField "boolean", "LOG_WRITE", "false"//sd中写log信息
+            buildConfigField "boolean", "LOG_WRITE", "false"// SD中写Log信息
 
             minifyEnabled false
             zipAlignEnabled false
@@ -55,7 +55,7 @@ android {
 
         release {
             buildConfigField "boolean", "LOG_DEBUG", "false"// 显示Log
-            buildConfigField "boolean", "LOG_WRITE", "false"//sd中写log信息
+            buildConfigField "boolean", "LOG_WRITE", "false"// SD中写Log信息
 
             minifyEnabled false
             shrinkResources false  //移除无用的resource文件（如果使用getIdentifier函数的需要关闭）
@@ -64,21 +64,24 @@ android {
             signingConfig signingConfigs.debug
         }
     }
+
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+
     sourceSets {
         main {
             java.srcDirs = ['src/main/java']
         }
     }
 }
+
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation project(path: ':libZWebView')
     implementation "com.android.support:appcompat-v7:$supprotVersion"
-    implementation 'com.github.zcolin:ZFrame:latest.release'//程序框架 
+    implementation 'com.github.zcolin:ZFrame:2.1.3'
 }
 
 

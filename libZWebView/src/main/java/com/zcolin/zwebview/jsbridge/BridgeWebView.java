@@ -31,8 +31,8 @@ public class BridgeWebView extends WebView implements WebViewJavascriptBridge {
 
     public static String toLoadJs = "WebViewJavascriptBridge.js";
     Map<String, CallBackFunction> responseCallbacks = new HashMap<String, CallBackFunction>();
-    Map<String, BridgeHandler>                                          messageHandlers   = new HashMap<String, BridgeHandler>();
-    BridgeHandler                                                       defaultHandler    = new DefaultHandler();
+    Map<String, BridgeHandler>    messageHandlers   = new HashMap<String, BridgeHandler>();
+    BridgeHandler                 defaultHandler    = new DefaultHandler();
 
     private List<Message> startupMessage = new ArrayList<Message>();
 
@@ -92,7 +92,8 @@ public class BridgeWebView extends WebView implements WebViewJavascriptBridge {
             m.setData(data);
         }
         if (responseCallback != null) {
-            String callbackStr = String.format(BridgeUtil.CALLBACK_ID_FORMAT, ++uniqueId + (BridgeUtil.UNDERLINE_STR + SystemClock.currentThreadTimeMillis()));
+            String callbackStr = String.format(BridgeUtil.CALLBACK_ID_FORMAT,
+                                               ++uniqueId + (BridgeUtil.UNDERLINE_STR + SystemClock.currentThreadTimeMillis()));
             responseCallbacks.put(callbackStr, responseCallback);
             m.setCallbackId(callbackStr);
         }

@@ -25,6 +25,7 @@ import android.widget.FrameLayout;
  * webview默认的chromeClient是{@link ZWebChromeClientWrapper}
  */
 public class ZVideoFullScreenWebChromeClient extends ZWebChromeClientWrapper {
+
     private View                               videoProgressView;
     private View                               customView;
     private WebView                            webView;
@@ -33,8 +34,8 @@ public class ZVideoFullScreenWebChromeClient extends ZWebChromeClientWrapper {
     private CustomViewShowStateListener        customViewShowStateListener;
     private Activity                           activity;
 
-    ZVideoFullScreenWebChromeClient(WebChromeClient webChromeClient, Activity activity, WebView webView, FrameLayout customViewContainer,
-            View videoProgressView) {
+    ZVideoFullScreenWebChromeClient(WebChromeClient webChromeClient, Activity activity, WebView webView,
+            FrameLayout customViewContainer, View videoProgressView) {
         super(webChromeClient);
         this.webView = webView;
         this.videoProgressView = videoProgressView;
@@ -85,8 +86,9 @@ public class ZVideoFullScreenWebChromeClient extends ZWebChromeClientWrapper {
     public void onHideCustomView() {
         super.onHideCustomView();
 
-        if (customView == null)
+        if (customView == null) {
             return;
+        }
 
         webView.setVisibility(View.VISIBLE);
         customViewContainer.setVisibility(View.GONE);
@@ -104,7 +106,9 @@ public class ZVideoFullScreenWebChromeClient extends ZWebChromeClientWrapper {
 
     private void toggleFullScreen(boolean isShowCustomView) {
         //横竖屏状态
-        activity.setRequestedOrientation(isShowCustomView ? ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE : ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        activity.setRequestedOrientation(isShowCustomView ?
+                                         ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE :
+                                         ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
         //actionBar显示状态
         if (activity instanceof AppCompatActivity) {

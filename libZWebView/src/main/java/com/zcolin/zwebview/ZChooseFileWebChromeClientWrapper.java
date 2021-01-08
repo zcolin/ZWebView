@@ -66,12 +66,12 @@ public class ZChooseFileWebChromeClientWrapper extends ZWebChromeClientWrapper {
     // For Android > 4.4
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     @Override
-    public boolean onShowFileChooser(WebView webView, ValueCallback<Uri[]> filePathCallback, WebChromeClient.FileChooserParams fileChooserParams) {
+    public boolean onShowFileChooser(WebView webView, ValueCallback<Uri[]> filePathCallback,
+            WebChromeClient.FileChooserParams fileChooserParams) {
         if (!super.onShowFileChooser(webView, filePathCallback, fileChooserParams)) {
             String acceptType = null;
             boolean isMulti = false;
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && fileChooserParams != null && fileChooserParams.getAcceptTypes() != null && 
-                    fileChooserParams
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && fileChooserParams != null && fileChooserParams.getAcceptTypes() != null && fileChooserParams
                     .getAcceptTypes().length > 0) {
                 acceptType = fileChooserParams.getAcceptTypes()[0];
             }
@@ -87,7 +87,8 @@ public class ZChooseFileWebChromeClientWrapper extends ZWebChromeClientWrapper {
     /**
      * 实现选择文件方法
      */
-    private void pickFile(ValueCallback<Uri[]> filePathCallbacks, ValueCallback<Uri> filePathCallback, String acceptType, boolean isMulti) {
+    private void pickFile(ValueCallback<Uri[]> filePathCallbacks, ValueCallback<Uri> filePathCallback,
+            String acceptType, boolean isMulti) {
         mUploadMessage = filePathCallback;
         mUploadMessages = filePathCallbacks;
         if (pickFile != null) {
@@ -138,7 +139,7 @@ public class ZChooseFileWebChromeClientWrapper extends ZWebChromeClientWrapper {
             processResult(intent.getData());
             return true;
         }
-        processResult((Uri) null); 
+        processResult((Uri) null);
         return false;
     }
 }

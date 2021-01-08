@@ -23,9 +23,10 @@ import java.net.URLDecoder;
  * 和网页js通讯的webViewClient
  */
 public class BridgeWebViewClient extends WebViewClient {
-    private boolean isSupportJsBridge;
-    private boolean isReceiveError;
-    private boolean isInjectJSBridge;
+
+    private boolean                isSupportJsBridge;
+    private boolean                isReceiveError;
+    private boolean                isInjectJSBridge;
     private OnInjectFinishListener injectFinishListener;
 
     /**
@@ -41,7 +42,7 @@ public class BridgeWebViewClient extends WebViewClient {
     public void setOnInjectFinishListener(OnInjectFinishListener listener) {
         this.injectFinishListener = listener;
     }
-    
+
     @Override
     public boolean shouldOverrideUrlLoading(WebView view, String url) {
         if (isSupportJsBridge) {
@@ -53,7 +54,8 @@ public class BridgeWebViewClient extends WebViewClient {
 
             if (view instanceof BridgeWebView) {
                 BridgeWebView webView = (BridgeWebView) view;
-                if (url.startsWith(BridgeUtil.YY_RETURN_DATA)) { // 如果是返回数据
+                // 如果是返回数据
+                if (url.startsWith(BridgeUtil.YY_RETURN_DATA)) {
                     webView.handlerReturnData(url);
                     return true;
                 } else if (url.startsWith(BridgeUtil.YY_OVERRIDE_SCHEMA)) { //

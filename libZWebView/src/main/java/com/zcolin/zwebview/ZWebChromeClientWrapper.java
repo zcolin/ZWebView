@@ -34,7 +34,8 @@ class ZWebChromeClientWrapper extends WebChromeClient {
 
     private WebChromeClient       webChromeClient;
     private ProgressBar           horizontalProBar;
-    private boolean               isSupportH5Location;//是否支持H5定位
+    /** 是否支持H5定位 */
+    private boolean               isSupportH5Location;
     private ZWebView.LoadListener loadListener;
 
     ZWebChromeClientWrapper(WebChromeClient webChromeClient) {
@@ -68,9 +69,13 @@ class ZWebChromeClientWrapper extends WebChromeClient {
     @Override
     public boolean onJsAlert(WebView view, String url, String message, final JsResult result) {
         if (!webChromeClient.onJsAlert(view, url, message, result)) {
-            new AlertDialog.Builder(view.getContext()).setTitle("提示").setMessage(message).setPositiveButton("确定", (dialog, which) -> {
-                result.confirm();
-            }).create().show();
+            new AlertDialog.Builder(view.getContext()).setTitle("提示")
+                                                      .setMessage(message)
+                                                      .setPositiveButton("确定", (dialog, which) -> {
+                                                          result.confirm();
+                                                      })
+                                                      .create()
+                                                      .show();
         }
         return true;
     }
@@ -78,9 +83,14 @@ class ZWebChromeClientWrapper extends WebChromeClient {
     @Override
     public boolean onJsConfirm(WebView view, String url, String message, final JsResult result) {
         if (!webChromeClient.onJsConfirm(view, url, message, result)) {
-            new AlertDialog.Builder(view.getContext()).setTitle("提示").setMessage(message).setPositiveButton("确定", (dialog, which) -> {
-                result.confirm();
-            }).setNegativeButton("取消", (dialog, which) -> result.cancel()).create().show();
+            new AlertDialog.Builder(view.getContext()).setTitle("提示")
+                                                      .setMessage(message)
+                                                      .setPositiveButton("确定", (dialog, which) -> {
+                                                          result.confirm();
+                                                      })
+                                                      .setNegativeButton("取消", (dialog, which) -> result.cancel())
+                                                      .create()
+                                                      .show();
         }
         return true;
     }
@@ -163,9 +173,14 @@ class ZWebChromeClientWrapper extends WebChromeClient {
     }
 
     @Override
-    public void onExceededDatabaseQuota(String url, String databaseIdentifier, long quota, long estimatedDatabaseSize, long totalQuota,
-            WebStorage.QuotaUpdater quotaUpdater) {
-        webChromeClient.onExceededDatabaseQuota(url, databaseIdentifier, quota, estimatedDatabaseSize, totalQuota, quotaUpdater);
+    public void onExceededDatabaseQuota(String url, String databaseIdentifier, long quota, long estimatedDatabaseSize,
+            long totalQuota, WebStorage.QuotaUpdater quotaUpdater) {
+        webChromeClient.onExceededDatabaseQuota(url,
+                                                databaseIdentifier,
+                                                quota,
+                                                estimatedDatabaseSize,
+                                                totalQuota,
+                                                quotaUpdater);
     }
 
     @Override
@@ -223,7 +238,8 @@ class ZWebChromeClientWrapper extends WebChromeClient {
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
-    public boolean onShowFileChooser(WebView webView, ValueCallback<Uri[]> filePathCallback, FileChooserParams fileChooserParams) {
+    public boolean onShowFileChooser(WebView webView, ValueCallback<Uri[]> filePathCallback,
+            FileChooserParams fileChooserParams) {
         return webChromeClient.onShowFileChooser(webView, filePathCallback, fileChooserParams);
     }
 }

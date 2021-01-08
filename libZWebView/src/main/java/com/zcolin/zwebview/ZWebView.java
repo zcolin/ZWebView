@@ -43,8 +43,10 @@ public class ZWebView extends BridgeWebView {
 
     private ZWebViewClientWrapper                      webViewClientWrapper;
     private ZWebChromeClientWrapper                    webChromeClientWrapper;
-    private ProgressBar                                horizontalProBar;            //横向加载進度条
-    private View                                       customProBar;                //圆形加载進度条
+    /** 横向加载进度条 */
+    private ProgressBar                                horizontalProBar;
+    /** 圆形加载进度条 */
+    private View                                       customProBar;
     private boolean                                    isSupportJsBridge;
     private boolean                                    isSupportH5Location;
     private View                                       errorView;
@@ -70,18 +72,24 @@ public class ZWebView extends BridgeWebView {
         setWebChromeClient(new WebChromeClient());
 
         WebSettings webSetting = getSettings();
-        webSetting.setJavaScriptEnabled(true);//支持JS
-        webSetting.setJavaScriptCanOpenWindowsAutomatically(true);//支持通过JS打开新窗口 
-        webSetting.setCacheMode(WebSettings.LOAD_NO_CACHE);//关闭webview中缓存 
-        webSetting.setDomStorageEnabled(true);  // 开启 DOM storage API 功能
-        webSetting.setDatabaseEnabled(true);    //开启 database storage API 功能
+        // 支持JS
+        webSetting.setJavaScriptEnabled(true);
+        // 支持通过JS打开新窗口
+        webSetting.setJavaScriptCanOpenWindowsAutomatically(true);
+        // 关闭webview中缓存
+        webSetting.setCacheMode(WebSettings.LOAD_NO_CACHE);
+        // 开启 DOM storage API 功能
+        webSetting.setDomStorageEnabled(true);
+        // 开启 database storage API 功能
+        webSetting.setDatabaseEnabled(true);
         webSetting.setGeolocationEnabled(true);
         setHorizontalScrollBarEnabled(false);
         setHorizontalScrollbarOverlay(true);
         setScrollBarStyle(WebView.SCROLLBARS_OUTSIDE_OVERLAY);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-            webSetting.setAllowUniversalAccessFromFileURLs(true);//解决跨域问题
+            // 解决跨域问题
+            webSetting.setAllowUniversalAccessFromFileURLs(true);
         }
 
         // webview从5.0开始默认不允许混合模式,https中不能加载http资源,需要设置开启。
@@ -156,7 +164,9 @@ public class ZWebView extends BridgeWebView {
      *                 }
      */
     public ZWebView setSupportChooseFile(Activity activity, IPickFile pickFile) {
-        webChromeClientWrapper = new ZChooseFileWebChromeClientWrapper(webChromeClientWrapper.getWebChromeClient(), activity, pickFile);
+        webChromeClientWrapper = new ZChooseFileWebChromeClientWrapper(webChromeClientWrapper.getWebChromeClient(),
+                                                                       activity,
+                                                                       pickFile);
         setWebChromeClient(webChromeClientWrapper.getWebChromeClient());
         return this;
     }
@@ -200,7 +210,9 @@ public class ZWebView extends BridgeWebView {
      *                 }
      */
     public ZWebView setSupportChooseFile(Fragment fragment, IPickFile pickFile) {
-        webChromeClientWrapper = new ZChooseFileWebChromeClientWrapper(webChromeClientWrapper.getWebChromeClient(), fragment, pickFile);
+        webChromeClientWrapper = new ZChooseFileWebChromeClientWrapper(webChromeClientWrapper.getWebChromeClient(),
+                                                                       fragment,
+                                                                       pickFile);
         setWebChromeClient(webChromeClientWrapper.getWebChromeClient());
         return this;
     }
@@ -249,23 +261,33 @@ public class ZWebView extends BridgeWebView {
         //将原来的布局之间添加一层，用来盛放webView和视频全屏控件
         group.removeView(this);
         group.addView(container, index, this.getLayoutParams());
-        container.addView(this, new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+        container.addView(this,
+                          new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT,
+                                                       ViewGroup.LayoutParams.MATCH_PARENT));
 
         //添加视频ViewContainer
         FrameLayout flCustomContainer = new FrameLayout(getContext());
         flCustomContainer.setVisibility(View.INVISIBLE);
-        container.addView(flCustomContainer, new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+        container.addView(flCustomContainer,
+                          new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT,
+                                                       ViewGroup.LayoutParams.MATCH_PARENT));
 
-        View videoProgressView = LayoutInflater.from(activity).inflate(R.layout.zwebview_view_webview_video_progress, null);
-        webChromeClientWrapper = new ZVideoFullScreenWebChromeClient(webChromeClientWrapper.getWebChromeClient(), activity, this, flCustomContainer, 
-                videoProgressView);
+        View videoProgressView = LayoutInflater.from(activity)
+                                               .inflate(R.layout.zwebview_view_webview_video_progress, null);
+        webChromeClientWrapper = new ZVideoFullScreenWebChromeClient(webChromeClientWrapper.getWebChromeClient(),
+                                                                     activity,
+                                                                     this,
+                                                                     flCustomContainer,
+                                                                     videoProgressView);
         setWebChromeClient(webChromeClientWrapper.getWebChromeClient());
         return this;
     }
 
-    public void setCustomViewShowStateListener(ZVideoFullScreenWebChromeClient.CustomViewShowStateListener customViewShowStateListener) {
+    public void setCustomViewShowStateListener(
+            ZVideoFullScreenWebChromeClient.CustomViewShowStateListener customViewShowStateListener) {
         if (webChromeClientWrapper != null && webChromeClientWrapper instanceof ZVideoFullScreenWebChromeClient) {
-            ((ZVideoFullScreenWebChromeClient) webChromeClientWrapper).setCustomViewShowStateListener(customViewShowStateListener);
+            ((ZVideoFullScreenWebChromeClient) webChromeClientWrapper).setCustomViewShowStateListener(
+                    customViewShowStateListener);
         }
     }
 
@@ -286,9 +308,12 @@ public class ZWebView extends BridgeWebView {
         int index = group.indexOfChild(this);
         group.removeView(this);
         group.addView(container, index, this.getLayoutParams());
-        container.addView(this, new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+        container.addView(this,
+                          new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT,
+                                                          ViewGroup.LayoutParams.MATCH_PARENT));
         customProBar = view;
-        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT,
+                                                                             ViewGroup.LayoutParams.MATCH_PARENT);
         params.addRule(RelativeLayout.CENTER_IN_PARENT);
         container.addView(customProBar, params);
         webViewClientWrapper.setCustomProgressBar(customProBar);
@@ -320,9 +345,14 @@ public class ZWebView extends BridgeWebView {
         int index = group.indexOfChild(this);
         group.removeView(this);
         group.addView(container, index, this.getLayoutParams());
-        container.addView(this, new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
-        horizontalProBar = (ProgressBar) LayoutInflater.from(getContext()).inflate(R.layout.zwebview_view_webview_horizontal_progressbar, null);
-        container.addView(horizontalProBar, new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, dip2px(getContext(), 4)));
+        container.addView(this,
+                          new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT,
+                                                       ViewGroup.LayoutParams.MATCH_PARENT));
+        horizontalProBar = (ProgressBar) LayoutInflater.from(getContext())
+                                                       .inflate(R.layout.zwebview_view_webview_horizontal_progressbar,
+                                                                null);
+        container.addView(horizontalProBar,
+                          new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, dip2px(getContext(), 4)));
         webChromeClientWrapper.setHorizontalProgressBar(horizontalProBar);
         webViewClientWrapper.setHorizontalProgressBar(horizontalProBar);
         return this;
@@ -350,10 +380,13 @@ public class ZWebView extends BridgeWebView {
         int index = group.indexOfChild(this);
         group.removeView(this);
         group.addView(container, index, this.getLayoutParams());
-        container.addView(this, new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+        container.addView(this,
+                          new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT,
+                                                          ViewGroup.LayoutParams.MATCH_PARENT));
         errorView = view;
         errorView.setVisibility(GONE);
-        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT,
+                                                                             ViewGroup.LayoutParams.MATCH_PARENT);
         params.addRule(RelativeLayout.CENTER_IN_PARENT);
         container.addView(errorView, params);
         webViewClientWrapper.setErrorView(errorView);
@@ -430,10 +463,12 @@ public class ZWebView extends BridgeWebView {
         });
     }
 
+    @Override
     public WebViewClient getWebViewClient() {
         return webViewClientWrapper.getWebViewClient();
     }
 
+    @Override
     public WebChromeClient getWebChromeClient() {
         return webChromeClientWrapper.getWebChromeClient();
     }
@@ -443,7 +478,9 @@ public class ZWebView extends BridgeWebView {
      */
     public boolean processResult(int requestCode, int resultCode, Intent intent) {
         if (webChromeClientWrapper instanceof ZChooseFileWebChromeClientWrapper) {
-            return ((ZChooseFileWebChromeClientWrapper) webChromeClientWrapper).processResult(requestCode, resultCode, intent);
+            return ((ZChooseFileWebChromeClientWrapper) webChromeClientWrapper).processResult(requestCode,
+                                                                                              resultCode,
+                                                                                              intent);
         }
         return false;
     }
